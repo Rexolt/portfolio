@@ -4,23 +4,23 @@
     <meta charset="UTF-8" />
     <title>Rexolt – Indie Fejlesztő Portfólió</title>
 
-    <!-- Tailwind (kísérleti böngészői CDN) -->
+    
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 
-    <!-- Google Font -->
+    
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="a.css" />
 
-    <!-- Font Awesome ikonok -->
+  
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
 
-    <!-- anime.js (kétszer, a feladat szerint) -->
+    
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"
       integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ=="
@@ -35,7 +35,7 @@
     ></script>
 
     <style>
-      /* Sima görgetés a teljes HTML dokumentumra */
+      
       html {
         scroll-behavior: smooth;
       }
@@ -44,12 +44,12 @@
         margin: 0;
         padding: 0;
         font-family: 'Inter', sans-serif;
-        overflow-x: hidden; /* Ne legyen vízszintes scroll */
-        background-color: #1f2937; /* sötét háttér */
-        color: #f3f4f6; /* világos szöveg */
+        overflow-x: hidden; 
+        background-color: #1f2937;
+        color: #f3f4f6; 
       }
 
-      /* ========== HERO ========== */
+      
       #hero {
         position: relative;
         min-height: 100vh;
@@ -68,7 +68,7 @@
         z-index: -1;
       }
 
-      /* Gépelős cím stílus */
+      
       #hero-title {
         font-size: 2rem;
       }
@@ -94,7 +94,7 @@
         }
       }
 
-      /* A lent ugráló nyílra rárakunk egy linket, hogy a #skills-re ugorjon */
+     
       .scroll-down-arrow {
         margin-top: 2rem;
         animation: bounce 1.5s infinite;
@@ -111,12 +111,12 @@
         }
       }
 
-      /* ========== NAGY SÖTÉT WRAPPER: Skills, Projects, Story ========== */
+      
       #gray-section {
         position: relative;
         background-color: #1f2937;
         overflow: hidden;
-        /* Legyen minimum 100vh, hogy biztosan megjelenjen a canvas. De amúgy a tartalom is kitölti. */
+        
         min-height: 100vh;
         width: 100%;
       }
@@ -127,12 +127,12 @@
         z-index: -1;
       }
 
-      /* ========== STORY Szekció - Matrix-szerű eső ========== */
+      
       #story {
         position: relative;
         margin-top: 4rem;
         margin-bottom: 4rem;
-        /* Végül is semmi extra, a canvas be lesz rakva abszolútban alá */
+        
       }
       #bgCanvasStory {
         position: absolute;
@@ -141,13 +141,13 @@
         z-index: -1;
       }
 
-      /* ========== Intersection Observer .reveal ========== */
+      
       .reveal {
         opacity: 0;
         transform: translateY(40px);
       }
 
-      /* ========== Flip Kártyák (Projektek) ========== */
+      
       .flip-card {
         perspective: 1000px;
       }
@@ -187,20 +187,20 @@
         padding: 1rem;
       }
 
-      /* Gomb-lágyanvilágító effekt */
+      
       .glow-button:hover {
         box-shadow:
           0 0 10px rgba(236, 72, 153, 0.8),
           0 0 20px rgba(128, 90, 213, 0.6);
       }
 
-      /* Ikonok lebegés */
+     
       .icon-hover:hover {
         transform: scale(1.1);
         box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
       }
 
-      /* Social ikonok hős-szekcióban */
+     
       .social-icons a {
         transition:
           transform 0.2s,
@@ -213,7 +213,7 @@
     </style>
   </head>
   <body>
-    <!-- ========== HERO Szekció ========== -->
+    
     <section id="hero">
       <canvas id="bgCanvasHero"></canvas>
 
@@ -235,7 +235,7 @@
         Munkáim & Technológiáim
       </a>
 
-      <!-- Social ikonok -->
+      
       <div class="social-icons flex space-x-6 mt-6">
         <a href="https://github.com/Rexolt" target="_blank" class="text-white text-2xl"
           ><i class="fab fa-github"></i
@@ -248,21 +248,21 @@
         ></a>
       </div>
 
-      <!-- Lefelé mutató, kattintható nyíl, ami a #skills-re navigál -->
+      
       <a href="#skills" class="scroll-down-arrow text-white">
         <i class="fas fa-chevron-down"></i>
       </a>
     </section>
 
-    <!-- ========== NAGY SÖTÉT WRAPPER: Skills, Projects, Story ========== -->
+    
     <div id="gray-section">
-      <!-- Globális canvas a vonalas háttér animációhoz -->
+      
       <canvas id="bgCanvasLines"></canvas>
 
-      <!-- ========== Képességek (Skills) ========== -->
+    
       <main class="py-16 px-4" id="skills">
         <div class="max-w-4xl mx-auto">
-          <!-- 1) Nyelvek (reveal) -->
+          
           <div class="mb-12 reveal">
             <h2 class="text-3xl font-bold mb-4">Milyen nyelveket használok és tanulok?</h2>
             <p class="text-gray-300 mb-4">
@@ -326,7 +326,7 @@
             </button>
           </div>
 
-          <!-- 2) Rendszerek (reveal) -->
+          
           <div class="mb-12 reveal">
             <h2 class="text-3xl font-bold mb-4">Rendszerek, amikben biztos tapasztalatom van</h2>
             <p class="text-gray-300 mb-4">
@@ -367,7 +367,7 @@
             </button>
           </div>
 
-          <!-- 3) Keretrendszerek (reveal) -->
+         
           <div class="mb-12 reveal">
             <h2 class="text-3xl font-bold mb-4">Keretrendszerek</h2>
             <p class="text-gray-300 mb-4">
@@ -464,7 +464,7 @@
             </button>
           </div>
 
-          <!-- 4) További technológiák (reveal) -->
+          
           <div class="mb-12 reveal">
             <h2 class="text-3xl font-bold mb-4">További technológiák</h2>
             <p class="text-gray-300 mb-4">
@@ -545,12 +545,12 @@
         </div>
       </main>
       <canvas id="bgCanvasLines"></canvas>
-      <!-- ========== Projektek (Flip Kártyákkal) ========== -->
+     
       <section id="projects" class="py-16 px-4 reveal">
         <div class="max-w-6xl mx-auto">
           <h2 class="text-3xl font-bold mb-8 text-center">Projektjeim</h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Kártya #1 -->
+           
             <div class="flip-card w-full h-96 shadow-lg rounded overflow-hidden">
               <div class="flip-card-inner relative w-full h-full">
                 <div class="flip-card-front absolute inset-0 flex flex-col">
@@ -582,7 +582,7 @@
               </div>
             </div>
 
-            <!-- Kártya #2 -->
+           
             <div class="flip-card w-full h-96 shadow-lg rounded overflow-hidden">
               <div class="flip-card-inner relative w-full h-full">
                 <div class="flip-card-front absolute inset-0 flex flex-col">
@@ -615,7 +615,7 @@
               </div>
             </div>
 
-            <!-- Kártya #3 -->
+           
             <div class="flip-card w-full h-96 shadow-lg rounded overflow-hidden">
               <div class="flip-card-inner relative w-full h-full">
                 <div class="flip-card-front absolute inset-0 flex flex-col">
@@ -651,7 +651,7 @@
         </div>
       </section>
 
-      <!-- ========== Történet (Story) - Matrix-háttér ========== -->
+     
       <section id="story" class="reveal px-4 py-16">
         <canvas id="bgCanvasStory"></canvas>
 
@@ -770,22 +770,16 @@
       </section>
     </div>
 
-    <!-- ========== Lábléc ========== -->
+  
     <footer class="bg-gray-800 text-gray-300 text-center py-4">
       &copy; 2025 Rexolt – Minden jog fenntartva
     </footer>
 
     <script>
-      /* ======================================
-       0) Mobiloptimalizálás - kevesebb animált elem
-          Ha mobil (kisebb mint 640px széles), csökkentsük
-          a lines és matrix columns számát, stb.
-      ====================================== */
+      
       let isMobile = window.innerWidth < 640
 
-      /* ======================================
-       1) HERO Canvas - Partikulák
-      ====================================== */
+      
       const hero = document.getElementById('hero')
       const heroCanvas = document.getElementById('bgCanvasHero')
       const heroCtx = heroCanvas.getContext('2d')
@@ -834,7 +828,7 @@
       }
       animateHeroParticles()
 
-      // Egér taszigatás
+    
       hero.addEventListener('mousemove', (e) => {
         const rect = hero.getBoundingClientRect()
         const mouseX = e.clientX - rect.left
@@ -855,9 +849,7 @@
         })
       })
 
-      /* ======================================
-       2) HERO cím GÉPELŐ animáció
-      ====================================== */
+      
       window.addEventListener('DOMContentLoaded', () => {
         const heroTitle = document.getElementById('hero-title')
         const text = 'Üdvözöllek, Rexolt vagyok'
@@ -872,7 +864,7 @@
             const delay = 50 + Math.random() * 70
             setTimeout(typeChar, delay)
           } else {
-            // Befejeződött, levehetjük a kurzort picit később
+           
             setTimeout(() => {
               heroTitle.classList.remove('typed')
             }, 800)
@@ -904,9 +896,7 @@
       )
       reveals.forEach((r) => observer.observe(r))
 
-      /* ======================================
-       4) Kattintásra bővülő ikonok
-      ====================================== */
+     
       const toggles = document.querySelectorAll('[data-toggle]')
       toggles.forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -915,7 +905,7 @@
           const hiddenIcons = container.querySelectorAll('[data-icon].hidden')
 
           if (hiddenIcons.length > 0) {
-            // Mutatjuk a rejtett ikonokat
+           
             hiddenIcons.forEach((i) => i.classList.remove('hidden'))
             anime({
               targets: hiddenIcons,
@@ -927,7 +917,7 @@
             })
             btn.textContent = 'Kevesebb mutatása'
           } else {
-            // Rejtés
+            
             const allIcons = container.querySelectorAll('[data-icon]')
             const showCount = Math.ceil(allIcons.length / 2)
             allIcons.forEach((icon, i) => {
@@ -940,9 +930,7 @@
         })
       })
 
-      /* ======================================
-       5) VONALAS HÁTTÉRANIMÁCIÓ a #gray-section-ben
-      ====================================== */
+     
       const graySection = document.getElementById('gray-section')
       const bgCanvasLines = document.getElementById('bgCanvasLines')
       const linesCtx = bgCanvasLines.getContext('2d')
@@ -969,7 +957,7 @@
 
       function drawLines() {
         linesCtx.clearRect(0, 0, bgCanvasLines.width, bgCanvasLines.height)
-        // Legyen kicsit erősebb, pl. 0.15
+        
         linesCtx.strokeStyle = 'rgba(255,255,255,0955)'
         linesCtx.lineWidth = 1
         lines.forEach((line) => {
@@ -993,9 +981,7 @@
       }
       animateLines()
 
-      /* ======================================
-       6) Flip Kártyák animáció - "rugósabb"
-      ====================================== */
+   
       document.querySelectorAll('[data-flip-btn]').forEach((btn) => {
         btn.addEventListener('click', () => {
           const flipInner = btn.closest('.flip-card-inner')
@@ -1020,9 +1006,7 @@
         })
       })
 
-      /* ======================================
-       7) STORY - "Matrix-szerű" kódeső
-      ====================================== */
+     
       const storySection = document.getElementById('story')
       const bgCanvasStory = document.getElementById('bgCanvasStory')
       const storyCtx = bgCanvasStory.getContext('2d')
@@ -1036,7 +1020,7 @@
         columns = Math.floor(bgCanvasStory.width / fontSize)
         matrixDrops = []
         for (let i = 0; i < columns; i++) {
-          matrixDrops[i] = Math.random() * -100 // random induló y
+          matrixDrops[i] = Math.random() * -100
         }
       }
 
@@ -1053,14 +1037,14 @@
       resizeStoryCanvas()
 
       function drawMatrix() {
-        // Fokozatos sötétítés "ráfestéssel"
+        
         storyCtx.fillStyle = 'rgba(0,0,0,0.15)'
         storyCtx.fillRect(0, 0, bgCanvasStory.width, bgCanvasStory.height)
 
-        storyCtx.fillStyle = 'rgba(0,255,0,0.25)' // zöldes, félátlátszó
+        storyCtx.fillStyle = 'rgba(0,255,0,0.25)' 
         storyCtx.font = fontSize + 'px monospace'
 
-        // Minden oszlopra
+       
         for (let i = 0; i < columns; i++) {
           const randomChar = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length))
           // X = i * fontSize, Y = matrixDrops[i] * fontSize
@@ -1068,7 +1052,7 @@
           let y = matrixDrops[i] * fontSize
           storyCtx.fillText(randomChar, x, y)
 
-          // Sosem menjen túl ~ 1.5x canvas height, aztán reset
+          
           if (y > bgCanvasStory.height * 1.5 && Math.random() > 0.95) {
             matrixDrops[i] = 0
           }
