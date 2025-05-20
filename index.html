@@ -1,1070 +1,228 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="hu">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Rexolt – Indie Fejlesztő Portfólió</title>
-
-    
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-
-    
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="a.css" />
-
-  
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-
-    
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"
-      integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.js"
-      integrity="sha512-FSNQjUUq97PtDnAJyMlBTH8EhV4o5X5FLVbzS9ttrdEVVbmrssJBh/PgXFQbxS+6yYx5n5irOj7de6Th0TRQZA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-
-    <style>
-      
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Inter', sans-serif;
-        overflow-x: hidden; 
-        background-color: #1f2937;
-        color: #f3f4f6; 
-      }
-
-      
-      #hero {
-        position: relative;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        background: linear-gradient(120deg, rgba(128, 90, 213, 0.6), rgba(236, 72, 153, 0.6));
-        overflow: hidden;
-      }
-      #bgCanvasHero {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-      }
-
-      
-      #hero-title {
-        font-size: 2rem;
-      }
-      @media (min-width: 768px) {
-        #hero-title {
-          font-size: 3rem;
-        }
-      }
-      #hero-title.typed::after {
-        content: '|';
-        display: inline-block;
-        margin-left: 4px;
-        animation: blink 0.7s infinite;
-      }
-      @keyframes blink {
-        0%,
-        50% {
-          opacity: 1;
-        }
-        51%,
-        100% {
-          opacity: 0;
-        }
-      }
-
-     
-      .scroll-down-arrow {
-        margin-top: 2rem;
-        animation: bounce 1.5s infinite;
-        font-size: 2rem;
-        cursor: pointer;
-      }
-      @keyframes bounce {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(10px);
-        }
-      }
-
-      
-      #gray-section {
-        position: relative;
-        background-color: #1f2937;
-        overflow: hidden;
-        
-        min-height: 100vh;
-        width: 100%;
-      }
-      #bgCanvasLines {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-      }
-
-      
-      #story {
-        position: relative;
-        margin-top: 4rem;
-        margin-bottom: 4rem;
-        
-      }
-      #bgCanvasStory {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-      }
-
-      
-      .reveal {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-
-      
-      .flip-card {
-        perspective: 1000px;
-      }
-      .flip-card-inner {
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-      }
-      .flip-card-inner.flipped {
-        transform: rotateY(180deg);
-        transition: transform 0.6s ease;
-      }
-      .flip-card-front,
-      .flip-card-back {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        backface-visibility: hidden;
-        border-radius: 0.25rem;
-        overflow: hidden;
-      }
-      .flip-card-front,
-      .flip-card-back {
-        display: flex;
-        flex-direction: column;
-      }
-      .flip-card-front {
-        background-color: #2d3748; /* gray-800 */
-        color: #f3f4f6;
-      }
-      .flip-card-back {
-        background-color: #4a5568;
-        color: #f3f4f6;
-        transform: rotateY(180deg);
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-      }
-
-      
-      .glow-button:hover {
-        box-shadow:
-          0 0 10px rgba(236, 72, 153, 0.8),
-          0 0 20px rgba(128, 90, 213, 0.6);
-      }
-
-     
-      .icon-hover:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
-      }
-
-     
-      .social-icons a {
-        transition:
-          transform 0.2s,
-          color 0.2s;
-      }
-      .social-icons a:hover {
-        transform: scale(1.2);
-        color: #ec4899;
-      }
-    </style>
-  </head>
-  <body>
-    
-    <section id="hero">
-      <canvas id="bgCanvasHero"></canvas>
-
-      <h1 id="hero-title" class="font-extrabold mb-4"></h1>
-
-      <main class="container">
-        <section class="animation">
-          <div class="first"><div>Indie fejlesztő</div></div>
-          <div class="second"><div>UI/UX Designer</div></div>
-          <div class="third"><div>Hobbi Fényképész</div></div>
-        </section>
-        <p>/Tanuló. Nézd meg, mivel foglalkozom!</p>
-      </main>
-
-      <a
-        href="#skills"
-        class="inline-block bg-white text-gray-900 font-medium px-6 py-3 rounded-full hover:bg-gray-200 transition glow-button"
-      >
-        Munkáim & Technológiáim
-      </a>
-
-      
-      <div class="social-icons flex space-x-6 mt-6">
-        <a href="https://github.com/Rexolt" target="_blank" class="text-white text-2xl"
-          ><i class="fab fa-github"></i
-        ></a>
-        <a href="https://instagram.com/" target="_blank" class="text-white text-2xl"
-          ><i class="fab fa-instagram"></i
-        ></a>
-        <a href="https://twitter.com/" target="_blank" class="text-white text-2xl"
-          ><i class="fab fa-twitter"></i
-        ></a>
+<head>
+  <meta charset="UTF-8">
+  <title>Rexolt – Modern Dark Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(120deg, #181c28 0%, #131622 100%);
+      color: #e5eaff;
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(34,36,56,0.82);
+      backdrop-filter: blur(20px) saturate(140%);
+      box-shadow: 0 8px 32px 0 rgba(127,90,240,0.16), 0 2px 12px 0 rgba(236,72,153,0.07);
+      border-radius: 2.2rem;
+      border: 1.5px solid rgba(127,90,240,0.08);
+    }
+    .nav-glass {
+      background: rgba(24,28,40,0.91);
+      backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1.5px solid rgba(127,90,240,0.13);
+    }
+    .nav-active {
+      background: linear-gradient(90deg,#7f5af0 60%,#f72585 130%);
+      color: #fff !important;
+      box-shadow: 0 1px 12px 0 #f7258540;
+      border-radius: 999px;
+      padding: 0.28em 1.1em;
+      transition: all .19s;
+    }
+    .nav-link {
+      color: #e5eaff; opacity: 0.75;
+      font-weight: 600;
+      font-size: 1.12rem;
+      padding: 0.28em 1em;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: color .2s, opacity .18s;
+      position: relative;
+    }
+    .nav-link:hover { color: #f72585; opacity: 1; }
+    .avatar-glow {
+      box-shadow: 0 0 0 6px #7f5af099, 0 8px 40px 0 #f7258533;
+    }
+    .fade-in { opacity: 0; transform: translateY(50px); transition: opacity .9s cubic-bezier(.44,1.08,.67,1), transform .9s cubic-bezier(.44,1.08,.67,1);}
+    .fade-in.visible { opacity: 1; transform: none; }
+    .glass:hover { box-shadow: 0 16px 56px 0 #7f5af049, 0 2px 20px 0 #f7258522; }
+    .skill-pill {
+      display: inline-block;
+      padding: 0.47em 1.25em;
+      border-radius: 999px;
+      background: linear-gradient(90deg,#7f5af0 70%,#f72585 120%);
+      color: #fff;
+      font-weight: 500;
+      font-size: 1.01em;
+      margin: .16em .3em .16em 0;
+      box-shadow: 0 1px 9px 0 rgba(127,90,240,0.10);
+      letter-spacing: .01em;
+      transition: transform .2s cubic-bezier(.61,.12,.58,.96), box-shadow .2s;
+      border: none;
+    }
+    .skill-pill:hover {
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 5px 18px #f7258550;
+      background: linear-gradient(90deg,#f72585 50%,#7f5af0 120%);
+    }
+    .main-btn {
+      background: linear-gradient(90deg,#f72585 50%,#7f5af0 140%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.13rem;
+      border: none;
+      outline: none;
+      padding: .94em 2.1em;
+      border-radius: 999px;
+      box-shadow: 0 3px 22px #7f5af042;
+      transition: transform .2s, box-shadow .2s;
+      display: inline-block;
+    }
+    .main-btn:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 8px 38px #f7258552; }
+    .stat-num { font-size: 2.5rem; font-weight:900; line-height:1; letter-spacing: -.04em;}
+    .glass.project:focus-within, .glass.project:hover { border-color: #f72585bb; }
+    @media (max-width: 640px) {
+      .glass { border-radius: 1.1rem; padding-left: 0.7rem!important; padding-right: 0.7rem!important;}
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-[#181c28] to-[#131622]">
+  <nav class="nav-glass fixed w-full top-0 left-0 z-40 flex items-center justify-center shadow-xl h-[62px] px-4">
+    <div class="flex justify-between items-center w-full max-w-5xl mx-auto">
+      <span class="font-black text-2xl tracking-tight bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 text-transparent bg-clip-text">Rexolt</span>
+      <div class="flex space-x-2 md:space-x-3">
+        <a href="#hero" class="nav-link nav-active" id="nav-hero">Főoldal</a>
+        <a href="#skills" class="nav-link" id="nav-skills">Skilljeim</a>
+        <a href="#projects" class="nav-link" id="nav-projects">Projektek</a>
+        <a href="#about" class="nav-link" id="nav-about">Rólam</a>
       </div>
-
-      
-      <a href="#skills" class="scroll-down-arrow text-white">
-        <i class="fas fa-chevron-down"></i>
-      </a>
-    </section>
-
-    
-    <div id="gray-section">
-      
-      <canvas id="bgCanvasLines"></canvas>
-
-    
-      <main class="py-16 px-4" id="skills">
-        <div class="max-w-4xl mx-auto">
-          
-          <div class="mb-12 reveal">
-            <h2 class="text-3xl font-bold mb-4">Milyen nyelveket használok és tanulok?</h2>
-            <p class="text-gray-300 mb-4">
-              Mindennapi munkám során több nyelvvel is foglalkozom, és folyamatosan bővítem a
-              tudásomat.
-            </p>
-            <div class="flex flex-wrap gap-4" id="lang-icons">
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <i class="fab fa-html5 text-orange-500 text-3xl"></i>
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded icon-hover"
-                data-icon
-              >
-                <i class="fab fa-css3-alt text-blue-500 text-3xl"></i>
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded icon-hover"
-                data-icon
-              >
-                <img src="/img/js.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-              >
-                <img src="/img/tp.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/rust.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/c++.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/kt.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/py.png" style="height: 60%" />
-              </div>
-            </div>
-            <button
-              class="mt-4 px-4 py-2 bg-pink-600 rounded hover:bg-pink-700 transition font-medium glow-button"
-              data-toggle="lang"
-            >
-              Több nyelv mutatása
-            </button>
-          </div>
-
-          
-          <div class="mb-12 reveal">
-            <h2 class="text-3xl font-bold mb-4">Rendszerek, amikben biztos tapasztalatom van</h2>
-            <p class="text-gray-300 mb-4">
-              Szeretek változatos környezetekben dolgozni, legyen szó szerverről vagy asztali
-              rendszerről.
-            </p>
-            <div class="flex flex-wrap gap-4" id="os-icons">
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded icon-hover"
-                data-icon
-              >
-                <img src="/img/ubuntu.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/deb.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded icon-hover"
-                data-icon
-              >
-                <img src="/img/win.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/linux.png" style="height: 60%" />
-              </div>
-            </div>
-            <button
-              class="mt-4 px-4 py-2 bg-pink-600 rounded hover:bg-pink-700 transition font-medium glow-button"
-              data-toggle="os"
-            >
-              Több rendszer mutatása
-            </button>
-          </div>
-
-         
-          <div class="mb-12 reveal">
-            <h2 class="text-3xl font-bold mb-4">Keretrendszerek</h2>
-            <p class="text-gray-300 mb-4">
-              A front- és back-end világából több fontos frameworköt ismerek és használok.
-            </p>
-            <div class="flex flex-wrap gap-4" id="framework-icons">
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded icon-hover"
-                data-icon
-              >
-                <img src="/img/vue.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img
-                  src="/img/react-logo-png-react-logo-png-img-900-900-free-transparent-react-png-900x900-2850930326.jpg"
-                  style="height: 50%"
-                />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/svelte.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded icon-hover"
-                data-icon
-              >
-                <img
-                  src="/img/next-js-logo-freelogovectors.net_-3012579327.png"
-                  style="height: 50%"
-                />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/electron.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/bootstrap-logo-27332169.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img
-                  src="/img/material-ui-icon-2048x1626-on580ia9-1556446894.png"
-                  style="height: 50%"
-                />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/Tailwind_CSS_Logo.svg_GkNDLAs-1211690297.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/Node_logo_NodeJS-2580964613.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/npm-2048-582778654.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/Qt_logo_neon_2022.svg-774308515.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/kép-removebg-preview.png" style="height: 50%" />
-              </div>
-            </div>
-            <button
-              class="mt-4 px-4 py-2 bg-pink-600 rounded hover:bg-pink-700 transition font-medium glow-button"
-              data-toggle="framework"
-            >
-              Több keretrendszer
-            </button>
-          </div>
-
-          
-          <div class="mb-12 reveal">
-            <h2 class="text-3xl font-bold mb-4">További technológiák</h2>
-            <p class="text-gray-300 mb-4">
-              Ide tartoznak fejlesztői eszközök, szolgáltatások, amiket gyakran használok.
-            </p>
-            <div class="flex flex-wrap gap-4" id="tech-icons">
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/github_PNG20-2475340993.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded icon-hover"
-                data-icon
-              >
-                <img src="/img/gitlab-logo-png-transparent-2743019643.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/384px-Webmin_Logo.svg-807004489.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/casaos-logo-3481594608.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/Cockpit-logo-3712557593.png" style="height: 50%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/str.png" style="height: 40%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded icon-hover"
-                data-icon
-              >
-                <img src="/img/code-stable-4184531784.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img src="/img/vs.png" style="height: 60%" />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded hidden icon-hover"
-                data-icon
-              >
-                <img
-                  src="/img/firebase-logo-png-firebase-logo-png-transparent-amp-svg-vector-pluspng-2400x3291-2197351020.png"
-                  style="height: 40%"
-                />
-              </div>
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-700 rounded icon-hover"
-                data-icon
-              >
-                <img src="/img/Git-Logo-2Color-1453469153.png" style="height: 50%" />
-              </div>
-            </div>
-            <button
-              class="mt-4 px-4 py-2 bg-pink-600 rounded hover:bg-pink-700 transition font-medium glow-button"
-              data-toggle="tech"
-            >
-              Több tech
-            </button>
-          </div>
-        </div>
-      </main>
-      <canvas id="bgCanvasLines"></canvas>
-     
-      <section id="projects" class="py-16 px-4 reveal">
-        <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl font-bold mb-8 text-center">Projektjeim</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-           
-            <div class="flip-card w-full h-96 shadow-lg rounded overflow-hidden">
-              <div class="flip-card-inner relative w-full h-full">
-                <div class="flip-card-front absolute inset-0 flex flex-col">
-                  <img
-                    src="https://camo.githubusercontent.com/8132b90db3182a7af3ffbcad042daede3b0ef524adae83cf879adcc4c3e80ffd/68747470733a2f2f692e696d6775722e636f6d2f48315a6f5345562e706e67"
-                    alt="Projekt 1"
-                    class="w-full h-44 object-cover"
-                  />
-                  <div class="p-4 flex flex-col flex-grow">
-                    <h3 class="text-xl font-semibold mb-2">SoundR</h3>
-                    <p class="text-gray-200 flex-grow">
-                      A SoundR egy Electronon és React-on alapuló hangtorzító.
-                    </p>
-                    <button
-                      class="mt-4 bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition glow-button self-start"
-                      data-flip-btn
-                    >
-                      Részletek
-                    </button>
-                  </div>
-                </div>
-                <div class="flip-card-back absolute inset-0">
-                  <h4 class="text-xl mb-2 font-semibold">Lorem ipsum dolor</h4>
-                  <p class="text-gray-100 text-center">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta ad esse doloribus
-                    doloremque explicabo ullam
-                  </p>
-                </div>
-              </div>
-            </div>
-
-           
-            <div class="flip-card w-full h-96 shadow-lg rounded overflow-hidden">
-              <div class="flip-card-inner relative w-full h-full">
-                <div class="flip-card-front absolute inset-0 flex flex-col">
-                  <img
-                    src="https://via.placeholder.com/600x300?text=Projekt+2"
-                    alt="Projekt 2"
-                    class="w-full h-44 object-cover"
-                  />
-                  <div class="p-4 flex flex-col flex-grow">
-                    <h3 class="text-xl font-semibold mb-2">Lorem ipsum dolor</h3>
-                    <p class="text-gray-200 flex-grow">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta ad esse
-                      doloribus doloremque explicabo ullam
-                    </p>
-                    <button
-                      class="mt-4 bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition glow-button self-start"
-                      data-flip-btn
-                    >
-                      Részletek
-                    </button>
-                  </div>
-                </div>
-                <div class="flip-card-back absolute inset-0">
-                  <h4 class="text-xl mb-2 font-semibold">Lorem ipsum dolor</h4>
-                  <p class="text-gray-100 text-center">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta ad esse doloribus
-                    doloremque explicabo ullam.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-           
-            <div class="flip-card w-full h-96 shadow-lg rounded overflow-hidden">
-              <div class="flip-card-inner relative w-full h-full">
-                <div class="flip-card-front absolute inset-0 flex flex-col">
-                  <img
-                    src="https://via.placeholder.com/600x300?text=Projekt+3"
-                    alt="Projekt 3"
-                    class="w-full h-44 object-cover"
-                  />
-                  <div class="p-4 flex flex-col flex-grow">
-                    <h3 class="text-xl font-semibold mb-2">Lorem ipsum dolor</h3>
-                    <p class="text-gray-200 flex-grow">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta ad esse
-                      doloribus doloremque explicabo ullam
-                    </p>
-                    <button
-                      class="mt-4 bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition glow-button self-start"
-                      data-flip-btn
-                    >
-                      Részletek
-                    </button>
-                  </div>
-                </div>
-                <div class="flip-card-back absolute inset-0">
-                  <h4 class="text-xl mb-2 font-semibold">Lorem ipsum dolor</h4>
-                  <p class="text-gray-100 text-center">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta ad esse doloribus
-                    doloremque explicabo ullam
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-     
-      <section id="story" class="reveal px-4 py-16">
-        <canvas id="bgCanvasStory"></canvas>
-
-        <div class="max-w-4xl mx-auto">
-          <h2 class="text-3xl font-bold mb-6 text-center">Történetem</h2>
-          <p class="text-gray-400 mb-6 leading-relaxed">
-            <strong
-              >Néha érdemes visszatekinteni, honnan indultunk, és észrevenni, mi vezetett a
-              sikerünkhöz. Steve Jobs is megmondta:</strong
-            >
-          </p>
-
-          <figure class="max-w-screen-md mx-auto text-center">
-            <svg
-              class="w-10 h-10 mx-auto mb-3 text-gray-400 dark:text-gray-600"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 18 14"
-            >
-              <path
-                d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z"
-              />
-            </svg>
-            <blockquote>
-              <p class="text-2xl italic font-medium text-gray-400 dark:text-white">
-                „Ha igazán közelről megnézed, a legtöbb egyéjszakás sikerhez valójában hosszú idő
-                kellett.”
-              </p>
-            </blockquote>
-            <figcaption class="flex items-center justify-center mt-6 space-x-3 rtl:space-x-reverse">
-              <img
-                class="w-6 h-6 rounded-full"
-                src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fres.cloudinary.com%2Fstartup-grind%2Fimage%2Fupload%2Fc_fill%2Cdpr_2.0%2Cf_auto%2Cg_center%2Ch_1080%2Cq_100%2Cw_1080%2Fv1%2Fgcs%2Fplatform-data-startupgrind%2Fevents%2Fsteve-jobs.jpg&f=1&nofb=1&ipt=2e8c07be424e6a4d586fc495e79cf9dec926ccbc7e42cbf75c8828d463d004c6&ipo=images"
-                alt="profile picture"
-              />
-              <div
-                class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-500 dark:divide-gray-700"
-              >
-                <cite class="pe-3 font-medium text-gray-900 dark:text-white">Steve Jobs</cite>
-                <cite class="ps-3 text-sm text-gray-500 dark:text-gray-400"
-                  >co-founder of Apple Inc. (1955–2011)</cite
-                >
-              </div>
-            </figcaption>
-          </figure>
-
-          <br />
-          <p class="text-gray-300">
-            Az én történetem valahol 9-10 éves koromban kezdődött, amikor először kezdett el igazán
-            érdekelni a számítástechnika. Eleinte csak a tárgyak mechanikai működése vonzott:
-            számtalan eszközt szétszedtem, összeraktam vagy épp új módon kombináltam. Egy nap
-            rábukkantam egy régi asztali számítógépre – talán még Windows XP futott rajta. Újra és
-            újra szétszedtem, majd összeraktam, legalább ötvenszer, ha nem százszor, mert minden
-            részletet meg akartam érteni. Szinte rajongtam érte.
-          </p>
-          <br />
-          <p class="text-gray-300">
-            Később egy rövid kitérőt tettem a telefonok világába: rengeteg készüléket szedtem szét,
-            hogy megtudjam, hogyan működnek. Ám újra visszatértem a számítógépekhez, és századszorra
-            is ugyanolyan lelkesedéssel vágtam bele a szétszerelésbe, mintha minden alkalommal
-            karácsonyi ajándékot bontanék.
-          </p>
-          <p class="text-gray-300">
-            Ekkor kezdtem el a szoftverek működésével is foglalkozni, ami elvezetett a
-            programozáshoz. Először a Python nyelvet ismertem meg, majd szép lassan egyre több
-            nyelvbe belekóstoltam. Rendíthetetlen volt a lelkesedésem, de ahogy haladtam előre, a
-            témák egyre összetettebbé váltak, és éreztem, hogy nehezebben fogadom be őket. Ekkor
-            jutott eszembe Elon Musk gondolata:
-          </p>
-
-          <figure class="max-w-screen-md mx-auto text-center">
-            <svg
-              class="w-10 h-10 mx-auto mb-3 text-gray-400 dark:text-gray-600"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 18 14"
-            >
-              <path
-                d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z"
-              />
-            </svg>
-            <blockquote>
-              <p class="text-2xl italic font-medium text-gray-900 dark:text-white">
-                „Nem én voltam a legokosabb a teremben, de én voltam az, aki soha nem adta fel.”
-              </p>
-            </blockquote>
-            <figcaption class="flex items-center justify-center mt-6 space-x-3 rtl:space-x-reverse">
-              <img
-                class="w-6 h-6 rounded-full"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Elon_Musk_Colorado_2022_%28cropped2%29.jpg/250px-Elon_Musk_Colorado_2022_%28cropped2%29.jpg"
-                alt="profile picture"
-              />
-              <div
-                class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-500 dark:divide-gray-700"
-              >
-                <cite class="pe-3 font-medium text-gray-900 dark:text-white">Elon Musk</cite>
-                <cite class="ps-3 text-sm text-gray-500 dark:text-gray-400">CEO at Tesla</cite>
-              </div>
-            </figcaption>
-          </figure>
-          <br />
-          <p class="text-gray-300">
-            Ez a mondat mindig segített át a nehézségeken. Rájöttem, hogy nem kell mindent egyszerre
-            megérteni – idővel úgyis a helyére kerülnek a dolgok. Ekkor kezdtem el weboldalakat
-            fejleszteni, UI/UX dizájnokat készíteni és komolyabb projektekben is részt venni.
-          </p>
-          <p class="text-gray-300">
-            Számomra a programozás leginspirálóbb része, hogy gyakorlatilag a semmiből építhetek fel
-            valami újat. Ez a folyamat engedi meg igazán, hogy kifejezzem önmagam, és rájöttem,
-            mennyi hasonló gondolkodású ember él a világban. Talán éppen ez az, ami nap mint nap
-            motivál: látni, hogy minden új sor kód mögött ott húzódik egy apróbb vagy nagyobb csoda.
-          </p>
-        </div>
-      </section>
     </div>
+  </nav>
+  <div class="h-[72px]"></div>
 
-  
-    <footer class="bg-gray-800 text-gray-300 text-center py-4">
-      &copy; 2025 Rexolt – Minden jog fenntartva
-    </footer>
+  <section id="hero" class="min-h-[62vh] flex flex-col items-center justify-center pt-14 pb-16">
+    <div class="glass px-9 py-14 max-w-2xl w-full text-center hero-shadow fade-in" style="margin-top:24px">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=rexolt&backgroundColor=transparent" alt="Avatar" class="w-28 h-28 rounded-full border-4 border-indigo-400 mx-auto mb-6 shadow-md avatar-glow" />
+      <h1 class="font-black text-4xl md:text-5xl mb-4 bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 text-transparent bg-clip-text drop-shadow-2xl">Szia, Rexolt vagyok!</h1>
+      <p class="text-lg text-[#c0bfff] mb-7">Indie fejlesztő, designer & tanuló.<br>
+      A modern web, design és kreativitás a szenvedélyem.</p>
+      <div class="flex justify-center gap-5 mb-6">
+        <a href="https://github.com/Rexolt" target="_blank" class="text-2xl text-[#e5eaff] hover:text-indigo-400 transition"><i class="fab fa-github"></i></a>
+        <a href="https://instagram.com/" target="_blank" class="text-2xl text-[#e5eaff] hover:text-fuchsia-400 transition"><i class="fab fa-instagram"></i></a>
+        <a href="https://twitter.com/" target="_blank" class="text-2xl text-[#e5eaff] hover:text-pink-400 transition"><i class="fab fa-twitter"></i></a>
+      </div>
+      <a href="#skills" class="main-btn mt-2">Nézd meg a skilljeimet!</a>
+    </div>
+  </section>
 
-    <script>
-      
-      let isMobile = window.innerWidth < 640
+  <section id="skills" class="pt-20 pb-16 fade-in">
+    <div class="max-w-3xl mx-auto px-5">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-6 bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 text-transparent bg-clip-text">Skilljeim</h2>
+      <div class="mb-5">
+        <div class="text-base text-[#bbb8e7] mb-1">Programozási nyelvek:</div>
+        <span class="skill-pill">JavaScript</span>
+        <span class="skill-pill">TypeScript</span>
+        <span class="skill-pill">Rust</span>
+        <span class="skill-pill">Python</span>
+      </div>
+      <div class="mb-5">
+        <div class="text-base text-[#bbb8e7] mb-1">Frameworkök & technológiák:</div>
+        <span class="skill-pill">Vue.js</span>
+        <span class="skill-pill">React</span>
+        <span class="skill-pill">TailwindCSS</span>
+        <span class="skill-pill">Electron</span>
+      </div>
+      <div class="flex gap-8 mt-9">
+        <div class="text-center">
+          <div class="stat-num text-fuchsia-400">13</div>
+          <div class="text-xs text-[#bbb8e7] mt-1">Kész projekt</div>
+        </div>
+        <div class="text-center">
+          <div class="stat-num text-indigo-400">4</div>
+          <div class="text-xs text-[#bbb8e7] mt-1">Publikus repo</div>
+        </div>
+        <div class="text-center">
+          <div class="stat-num text-green-400">5</div>
+          <div class="text-xs text-[#bbb8e7] mt-1">Év tapasztalat</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      
-      const hero = document.getElementById('hero')
-      const heroCanvas = document.getElementById('bgCanvasHero')
-      const heroCtx = heroCanvas.getContext('2d')
+  <section id="projects" class="pt-20 pb-20 fade-in">
+    <div class="max-w-5xl mx-auto px-5">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-10 bg-gradient-to-r from-fuchsia-400 to-indigo-400 text-transparent bg-clip-text">Kiemelt projektjeim</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="glass project px-8 py-7 flex flex-col focus-within:ring-2 focus-within:ring-fuchsia-400 shadow-lg transition-all">
+          <span class="text-fuchsia-400 font-bold text-lg mb-1">SoundR</span>
+          <span class="text-[#bbb8e7] text-base mb-3">Electron + React alapú hangtorzító app modern UI-jal.</span>
+          <a href="#" class="inline-block mt-auto text-fuchsia-300 hover:text-indigo-300 text-base font-bold transition">Demo &rarr;</a>
+        </div>
+        <div class="glass project px-8 py-7 flex flex-col shadow-lg transition-all">
+          <span class="text-indigo-400 font-bold text-lg mb-1">Portfolio V2</span>
+          <span class="text-[#bbb8e7] text-base mb-3">Ez a portfólió oldal – dark, minimal, minden eszközön letisztult.</span>
+          <a href="#" class="inline-block mt-auto text-fuchsia-300 hover:text-indigo-300 text-base font-bold transition">Demo &rarr;</a>
+        </div>
+        <div class="glass project px-8 py-7 flex flex-col shadow-lg transition-all">
+          <span class="text-green-400 font-bold text-lg mb-1">Discord Status Bot</span>
+          <span class="text-[#bbb8e7] text-base mb-3">Minecraft szerver státusz bot Discord integrációval.</span>
+          <a href="#" class="inline-block mt-auto text-fuchsia-300 hover:text-indigo-300 text-base font-bold transition">Demo &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      function resizeHeroCanvas() {
-        heroCanvas.width = hero.offsetWidth
-        heroCanvas.height = hero.offsetHeight
-      }
-      window.addEventListener('resize', () => {
-        resizeHeroCanvas()
-        isMobile = window.innerWidth < 640
-      })
-      resizeHeroCanvas()
+  <section id="about" class="pt-20 pb-16 fade-in">
+    <div class="max-w-2xl mx-auto px-5">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-6 bg-gradient-to-r from-indigo-400 to-fuchsia-400 text-transparent bg-clip-text">Rólam</h2>
+      <p class="text-[#bbb8e7] text-base md:text-lg leading-relaxed mb-3">
+        A tech már gyerekkoromtól az életem része, a számítógépek szerelésétől a webfejlesztésig.
+        Szeretem a modern UI/UX-et, és örömöm lelem abban, ha <span class="font-bold text-fuchsia-400">letisztult, inspiráló digitális élményeket</span> adhatok.
+      </p>
+      <p class="text-[#bbb8e7] text-base md:text-lg leading-relaxed">
+        Hiszem, hogy <span class="font-bold text-indigo-400">az egyszerű, jól átgondolt design</span> az igazi érték – és minden projektben tanulok valami újat!
+      </p>
+    </div>
+  </section>
 
-      let HERO_PARTICLE_COUNT = isMobile ? 20 : 40
-      let heroParticles = []
-      for (let i = 0; i < HERO_PARTICLE_COUNT; i++) {
-        heroParticles.push({
-          x: Math.random() * heroCanvas.width,
-          y: Math.random() * heroCanvas.height,
-          r: 3 + Math.random() * 4,
-          dx: Math.random() - 0.5,
-          dy: Math.random() - 0.5,
-        })
-      }
+  <footer class="text-center text-xs text-[#bbb8e7] py-10 mt-12">© 2025 Rexolt – Minden jog fenntartva.</footer>
 
-      function drawHeroParticles() {
-        heroCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height)
-        heroCtx.fillStyle = 'rgba(255,255,255,0.7)'
-        heroParticles.forEach((p) => {
-          heroCtx.beginPath()
-          heroCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-          heroCtx.fill()
-        })
-      }
-
-      function animateHeroParticles() {
-        heroParticles.forEach((p) => {
-          p.x += p.dx
-          p.y += p.dy
-          if (p.x < 0 || p.x > heroCanvas.width) p.dx = -p.dx
-          if (p.y < 0 || p.y > heroCanvas.height) p.dy = -p.dy
-        })
-        drawHeroParticles()
-        requestAnimationFrame(animateHeroParticles)
-      }
-      animateHeroParticles()
-
-    
-      hero.addEventListener('mousemove', (e) => {
-        const rect = hero.getBoundingClientRect()
-        const mouseX = e.clientX - rect.left
-        const mouseY = e.clientY - rect.top
-        const range = 80
-        heroParticles.forEach((p) => {
-          let dx = p.x - mouseX
-          let dy = p.y - mouseY
-          let dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < range) {
-            let angle = Math.atan2(dy, dx)
-            let force = (range - dist) / range
-            let fx = force * Math.cos(angle) * 2
-            let fy = force * Math.sin(angle) * 2
-            p.x += fx
-            p.y += fy
-          }
-        })
-      })
-
-      
-      window.addEventListener('DOMContentLoaded', () => {
-        const heroTitle = document.getElementById('hero-title')
-        const text = 'Üdvözöllek, Rexolt vagyok'
-        let index = 0
-        heroTitle.classList.add('typed')
-        heroTitle.textContent = ''
-
-        function typeChar() {
-          heroTitle.textContent = text.substring(0, index)
-          index++
-          if (index <= text.length) {
-            const delay = 50 + Math.random() * 70
-            setTimeout(typeChar, delay)
-          } else {
-           
-            setTimeout(() => {
-              heroTitle.classList.remove('typed')
-            }, 800)
-          }
-        }
-        typeChar()
-      })
-
-      /* ======================================
-       3) Intersection Observer: .reveal
-      ====================================== */
-      const reveals = document.querySelectorAll('.reveal')
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              anime({
-                targets: entry.target,
-                opacity: [0, 1],
-                translateY: [40, 0],
-                easing: 'easeOutQuad',
-                duration: 700,
-              })
-              observer.unobserve(entry.target)
-            }
-          })
-        },
-        { threshold: 0.1 },
-      )
-      reveals.forEach((r) => observer.observe(r))
-
-     
-      const toggles = document.querySelectorAll('[data-toggle]')
-      toggles.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const type = btn.getAttribute('data-toggle')
-          const container = document.getElementById(type + '-icons')
-          const hiddenIcons = container.querySelectorAll('[data-icon].hidden')
-
-          if (hiddenIcons.length > 0) {
-           
-            hiddenIcons.forEach((i) => i.classList.remove('hidden'))
-            anime({
-              targets: hiddenIcons,
-              opacity: [0, 1],
-              scale: [0.5, 1],
-              easing: 'easeOutElastic(1, .8)',
-              duration: 700,
-              delay: anime.stagger(80),
-            })
-            btn.textContent = 'Kevesebb mutatása'
-          } else {
-            
-            const allIcons = container.querySelectorAll('[data-icon]')
-            const showCount = Math.ceil(allIcons.length / 2)
-            allIcons.forEach((icon, i) => {
-              if (i >= showCount) {
-                icon.classList.add('hidden')
-              }
-            })
-            btn.textContent = 'Több ' + type + ' mutatása'
-          }
-        })
-      })
-
-     
-      const graySection = document.getElementById('gray-section')
-      const bgCanvasLines = document.getElementById('bgCanvasLines')
-      const linesCtx = bgCanvasLines.getContext('2d')
-
-      function resizeLinesCanvas() {
-        bgCanvasLines.width = graySection.offsetWidth
-        bgCanvasLines.height = graySection.offsetHeight
-      }
-      window.addEventListener('resize', () => {
-        resizeLinesCanvas()
-        isMobile = window.innerWidth < 640
-      })
-      resizeLinesCanvas()
-
-      let lineCount = isMobile ? 25 : 50 // mobilon kevesebb vonal
-      let lines = []
-      for (let i = 0; i < lineCount; i++) {
-        let length = 100 + Math.random() * 200
-        let x = Math.random() * bgCanvasLines.width
-        let y = Math.random() * bgCanvasLines.height
-        let speed = 0.3 + Math.random() * 0.5
-        lines.push({ x, y, length, speed })
-      }
-
-      function drawLines() {
-        linesCtx.clearRect(0, 0, bgCanvasLines.width, bgCanvasLines.height)
-        
-        linesCtx.strokeStyle = 'rgba(255,255,255,0955)'
-        linesCtx.lineWidth = 1
-        lines.forEach((line) => {
-          linesCtx.beginPath()
-          linesCtx.moveTo(line.x, line.y)
-          linesCtx.lineTo(line.x + line.length, line.y)
-          linesCtx.stroke()
-        })
-      }
-
-      function animateLines() {
-        lines.forEach((line) => {
-          line.x += line.speed
-          if (line.x > bgCanvasLines.width) {
-            line.x = -line.length
-            line.y = Math.random() * bgCanvasLines.height
-          }
-        })
-        drawLines()
-        requestAnimationFrame(animateLines)
-      }
-      animateLines()
-
+  <script>
    
-      document.querySelectorAll('[data-flip-btn]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const flipInner = btn.closest('.flip-card-inner')
-          const isFlipped = flipInner.classList.contains('flipped')
+    function fadeInOnScroll() {
+      document.querySelectorAll('.fade-in').forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 70) section.classList.add('visible');
+      });
+    }
+    window.addEventListener('scroll', fadeInOnScroll);
+    window.addEventListener('DOMContentLoaded', fadeInOnScroll);
 
-          anime({
-            targets: flipInner,
-            rotateY: isFlipped ? 0 : 180,
-            duration: 800,
-            easing: 'spring(1, 80, 10, 0)',
-            begin: () => {
-              if (isFlipped) {
-                flipInner.classList.remove('flipped')
-              }
-            },
-            complete: () => {
-              if (!isFlipped) {
-                flipInner.classList.add('flipped')
-              }
-            },
-          })
-        })
-      })
-
-     
-      const storySection = document.getElementById('story')
-      const bgCanvasStory = document.getElementById('bgCanvasStory')
-      const storyCtx = bgCanvasStory.getContext('2d')
-
-      let columns, fontSize, matrixDrops
-      let matrixChars =
-        '01あいうえおカキクケコabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-
-      function initMatrix() {
-        fontSize = isMobile ? 14 : 18
-        columns = Math.floor(bgCanvasStory.width / fontSize)
-        matrixDrops = []
-        for (let i = 0; i < columns; i++) {
-          matrixDrops[i] = Math.random() * -100
+    const navs = [
+      {id:'hero', nav:'nav-hero'},
+      {id:'skills', nav:'nav-skills'},
+      {id:'projects', nav:'nav-projects'},
+      {id:'about', nav:'nav-about'}
+    ];
+    function setActiveNav() {
+      let y = window.scrollY + 90;
+      navs.forEach(({id,nav})=>{
+        const sec = document.getElementById(id);
+        const link = document.getElementById(nav);
+        if(sec && sec.offsetTop <= y && (sec.offsetTop+sec.offsetHeight) > y){
+          link.classList.add('nav-active');
+        } else {
+          link.classList.remove('nav-active');
         }
-      }
-
-      function resizeStoryCanvas() {
-        bgCanvasStory.width = storySection.offsetWidth
-        bgCanvasStory.height = storySection.offsetHeight
-        initMatrix()
-      }
-      window.addEventListener('resize', () => {
-        resizeStoryCanvas()
-        isMobile = window.innerWidth < 640
-        initMatrix()
-      })
-      resizeStoryCanvas()
-
-      function drawMatrix() {
-        
-        storyCtx.fillStyle = 'rgba(0,0,0,0.15)'
-        storyCtx.fillRect(0, 0, bgCanvasStory.width, bgCanvasStory.height)
-
-        storyCtx.fillStyle = 'rgba(0,255,0,0.25)' 
-        storyCtx.font = fontSize + 'px monospace'
-
-       
-        for (let i = 0; i < columns; i++) {
-          const randomChar = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length))
-          // X = i * fontSize, Y = matrixDrops[i] * fontSize
-          let x = i * fontSize
-          let y = matrixDrops[i] * fontSize
-          storyCtx.fillText(randomChar, x, y)
-
-          
-          if (y > bgCanvasStory.height * 1.5 && Math.random() > 0.95) {
-            matrixDrops[i] = 0
-          }
-          matrixDrops[i]++
-        }
-      }
-
-      function animateMatrix() {
-        drawMatrix()
-        requestAnimationFrame(animateMatrix)
-      }
-      animateMatrix()
-    </script>
-  </body>
+      });
+    }
+    window.addEventListener('scroll', setActiveNav);
+    window.addEventListener('DOMContentLoaded', setActiveNav);
+  </script>
+</body>
 </html>
