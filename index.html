@@ -1,216 +1,427 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <title>Rexolt – Modern Dark Portfolio</title>
+  <meta charset="UTF-8" />
+  <title>Rexolt – Terminal Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(120deg, #181c28 0%, #131622 100%);
-      color: #e5eaff;
+      font-family: 'JetBrains Mono', 'Inter', monospace;
+      background: linear-gradient(120deg,#141a28 75%,#1b1533 100%);
+      color: #e9fff8;
       min-height: 100vh;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
     }
-    .glass {
-      background: rgba(34,36,56,0.82);
-      backdrop-filter: blur(20px) saturate(140%);
-      box-shadow: 0 8px 32px 0 rgba(127,90,240,0.16), 0 2px 12px 0 rgba(236,72,153,0.07);
-      border-radius: 2.2rem;
-      border: 1.5px solid rgba(127,90,240,0.08);
+    .parallax-bg {
+      pointer-events: none;
+      position: fixed;
+      z-index: 0;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      opacity: 0.24;
+      background: none;
+      mix-blend-mode: lighten;
     }
-    .nav-glass {
-      background: rgba(24,28,40,0.91);
-      backdrop-filter: blur(18px) saturate(160%);
-      border-bottom: 1.5px solid rgba(127,90,240,0.13);
+    .terminal-window {
+      background: rgba(17,22,38,0.96);
+      border-radius: 16px;
+      border: 2.5px solid #41ff86b2;
+      box-shadow: 0 6px 36px 0 #22e38f25, 0 2px 20px 0 #17fa7b10;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .22s cubic-bezier(.44,1.08,.67,1);
     }
-    .nav-active {
-      background: linear-gradient(90deg,#7f5af0 60%,#f72585 130%);
-      color: #fff !important;
-      box-shadow: 0 1px 12px 0 #f7258540;
-      border-radius: 999px;
-      padding: 0.28em 1.1em;
-      transition: all .19s;
+    .terminal-window:hover {
+      box-shadow: 0 10px 60px #17fa7b28, 0 4px 38px #41ff8622;
+      border-color: #41ff86;
     }
-    .nav-link {
-      color: #e5eaff; opacity: 0.75;
-      font-weight: 600;
-      font-size: 1.12rem;
-      padding: 0.28em 1em;
-      border-radius: 999px;
-      text-decoration: none;
-      transition: color .2s, opacity .18s;
+    .terminal-header {
+      background: linear-gradient(90deg,#183a2a 70%,#132312 100%);
+      display: flex; align-items: center; gap: 8px;
+      height: 38px; padding: 0 1.15em;
+      border-bottom: 1.5px solid #41ff8624;
+      border-radius: 15px 15px 0 0;
+    }
+    .term-dot { width: 13px; height: 13px; border-radius: 50%; margin-right: 3px;}
+    .dot-red {background:#ff4754;}
+    .dot-yellow {background:#ffe477;}
+    .dot-green {background:#41ff86;}
+    .terminal-title {
+      color: #41ff86; font-weight: bold; font-size: 1.09em;
+      font-family: inherit; letter-spacing: .03em;
+      margin-left: 8px;
+      flex: 1 1 auto;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      user-select: none;
+    }
+    .term-content {
+      padding: 2.4em 2em 2em 2em;
+      font-size: 1.06rem;
+      color: #cbffe5;
       position: relative;
     }
-    .nav-link:hover { color: #f72585; opacity: 1; }
-    .avatar-glow {
-      box-shadow: 0 0 0 6px #7f5af099, 0 8px 40px 0 #f7258533;
-    }
-    .fade-in { opacity: 0; transform: translateY(50px); transition: opacity .9s cubic-bezier(.44,1.08,.67,1), transform .9s cubic-bezier(.44,1.08,.67,1);}
+    .term-prompt { color: #17fa7b; font-weight: 600; font-family: inherit; margin-right: .23em; }
+    .fade-in { opacity: 0; transform: translateY(38px); transition: opacity .85s cubic-bezier(.44,1.08,.67,1), transform .88s cubic-bezier(.44,1.08,.67,1);}
     .fade-in.visible { opacity: 1; transform: none; }
-    .glass:hover { box-shadow: 0 16px 56px 0 #7f5af049, 0 2px 20px 0 #f7258522; }
-    .skill-pill {
+    .skill-badge {
       display: inline-block;
-      padding: 0.47em 1.25em;
+      padding: 0.35em 1.13em;
       border-radius: 999px;
-      background: linear-gradient(90deg,#7f5af0 70%,#f72585 120%);
-      color: #fff;
-      font-weight: 500;
-      font-size: 1.01em;
-      margin: .16em .3em .16em 0;
-      box-shadow: 0 1px 9px 0 rgba(127,90,240,0.10);
+      background: linear-gradient(90deg,#41ff86 70%,#36e2f8 130%);
+      color: #141e13;
+      font-weight: 600;
+      font-size: .99em;
+      margin: .15em .21em .13em 0;
+      box-shadow: 0 1px 7px 0 #41ff8621;
       letter-spacing: .01em;
-      transition: transform .2s cubic-bezier(.61,.12,.58,.96), box-shadow .2s;
+      transition: transform .2s, box-shadow .2s;
       border: none;
     }
-    .skill-pill:hover {
-      transform: scale(1.08) translateY(-2px);
-      box-shadow: 0 5px 18px #f7258550;
-      background: linear-gradient(90deg,#f72585 50%,#7f5af0 120%);
+    .skill-badge:hover { transform: scale(1.08) translateY(-1.2px); box-shadow: 0 3px 14px #41ff8670; background: linear-gradient(90deg,#36e2f8 40%,#41ff86 120%);}
+    .progressbar-track {
+      width: 100%;
+      background: #223225;
+      border-radius: 100px;
+      height: 12px;
+      box-shadow: 0 0 8px #17fa7b22;
+      overflow: hidden;
+      margin-bottom: .9em;
+      margin-top: .4em;
+      position: relative;
+    }
+    .progressbar-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg,#41ff86 60%,#36e2f8 120%);
+      box-shadow: 0 0 16px #41ff86a2;
+      width: 0;
+      transition: width 1.4s cubic-bezier(.7,.26,.18,1.09);
+    }
+    .progressbar-label {
+      color: #41ff86;
+      font-weight: 600;
+      font-size: .99em;
+      margin-bottom: 2px;
+      margin-left: 2px;
     }
     .main-btn {
-      background: linear-gradient(90deg,#f72585 50%,#7f5af0 140%);
-      color: #fff;
+      background: linear-gradient(90deg,#36e2f8 60%,#41ff86 130%);
+      color: #141e13;
       font-weight: 700;
-      font-size: 1.13rem;
+      font-size: 1.09rem;
       border: none;
-      outline: none;
-      padding: .94em 2.1em;
+      padding: .86em 2.1em;
       border-radius: 999px;
-      box-shadow: 0 3px 22px #7f5af042;
+      box-shadow: 0 3px 22px #36e2f824;
       transition: transform .2s, box-shadow .2s;
       display: inline-block;
     }
-    .main-btn:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 8px 38px #f7258552; }
-    .stat-num { font-size: 2.5rem; font-weight:900; line-height:1; letter-spacing: -.04em;}
-    .glass.project:focus-within, .glass.project:hover { border-color: #f72585bb; }
-    @media (max-width: 640px) {
-      .glass { border-radius: 1.1rem; padding-left: 0.7rem!important; padding-right: 0.7rem!important;}
+    .main-btn:hover { transform: scale(1.05) translateY(-1.5px); box-shadow: 0 8px 38px #41ff8676; }
+    .timeline {
+      position: relative;
+      margin-left: 20px;
+      padding-left: 30px;
+      border-left: 3px solid #41ff86b2;
     }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 42px;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -38px; top: 5px;
+      width: 21px; height: 21px;
+      background: linear-gradient(120deg,#36e2f8 50%,#41ff86 120%);
+      border-radius: 50%;
+      border: 2.5px solid #fff;
+      box-shadow: 0 0 18px #41ff8646;
+      z-index: 3;
+      animation: pulseDot 1.3s infinite alternate;
+    }
+    @keyframes pulseDot {
+      to { box-shadow: 0 0 38px #36e2f8cc; }
+    }
+    .timeline-date { font-size: .93em; color:#36e2f8; font-weight: 600; margin-bottom: 2px;}
+    .timeline-title { font-size: 1.11em; color:#fffda1; font-weight: 700; margin-bottom: 2px;}
+    .timeline-desc { font-size:.98em; color: #cbffe5; }
+    @media (max-width: 960px) {
+      .twocol { flex-direction: column; }
+      .twocol>div { width: 100%!important; margin-bottom:30px;}
+    }
+    @media (max-width: 700px) {
+      .timeline { margin-left:0; padding-left: 15px; border-left-width:2px;}
+      .timeline-dot { left: -28px; width:14px; height:14px;}
+      .timeline-title { font-size:1em;}
+    }
+    @media (max-width: 720px) {
+      .terminal-window { padding: 0 0; border-radius: 10px;}
+      .term-content { padding: 1.08em 1em 1.1em 1em;}
+      .terminal-header { border-radius: 10px 10px 0 0;}
+      .twocol>div {margin-bottom:26px;}
+    }
+    @media (max-width: 620px) {
+      .hamburger { display:flex;}
+      .mainnav { display:none;}
+      .mainnav.open { display:block; position:fixed; left:0; top:60px; width:100vw; background:#161a24f1; z-index:50; box-shadow:0 8px 32px #41ff8620;}
+      .mainnav.open a { display:block; border-bottom:1px solid #41ff8616; padding:1.2em 2em;}
+    }
+    .nav-link {
+      color: #e9fff8; opacity: 0.78;
+      font-weight: 600;
+      font-size: 1.08rem;
+      padding: 0.25em 1em;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: color .18s, opacity .18s;
+      position: relative;
+    }
+    .nav-link:hover { color: #41ff86; opacity: 1; }
+    .nav-active {
+      background: linear-gradient(90deg,#41ff86 60%,#36e2f8 120%);
+      color: #141e13 !important;
+      box-shadow: 0 1px 8px 0 #36e2f850;
+      border-radius: 999px;
+      padding: 0.25em 1em;
+      transition: all .15s;
+      opacity:1;
+    }
+    .hamburger { display:none; cursor:pointer; width:32px; height:32px; justify-content:center; align-items:center;}
+    .hamburger span { display:block; height:3px; width:22px; background:#41ff86; margin:4px 0; border-radius:3px; transition:.25s;}
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-[#181c28] to-[#131622]">
-  <nav class="nav-glass fixed w-full top-0 left-0 z-40 flex items-center justify-center shadow-xl h-[62px] px-4">
+<body>
+  <canvas id="parallaxBG" class="parallax-bg"></canvas>
+  <nav class="fixed w-full top-0 left-0 z-40 flex items-center justify-center bg-[#161a24ee] shadow-lg h-[56px] px-4 border-b border-[#41ff862d]">
     <div class="flex justify-between items-center w-full max-w-5xl mx-auto">
-      <span class="font-black text-2xl tracking-tight bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 text-transparent bg-clip-text">Rexolt</span>
-      <div class="flex space-x-2 md:space-x-3">
+      <span class="font-black text-xl md:text-2xl tracking-tight text-[#41ff86] select-none">rexolt@portfolio:~$</span>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <div class="mainnav flex space-x-1 md:space-x-4 font-semibold">
         <a href="#hero" class="nav-link nav-active" id="nav-hero">Főoldal</a>
         <a href="#skills" class="nav-link" id="nav-skills">Skilljeim</a>
+        <a href="#timeline" class="nav-link" id="nav-timeline">Idővonal</a>
         <a href="#projects" class="nav-link" id="nav-projects">Projektek</a>
         <a href="#about" class="nav-link" id="nav-about">Rólam</a>
       </div>
     </div>
   </nav>
-  <div class="h-[72px]"></div>
-
-  <section id="hero" class="min-h-[62vh] flex flex-col items-center justify-center pt-14 pb-16">
-    <div class="glass px-9 py-14 max-w-2xl w-full text-center hero-shadow fade-in" style="margin-top:24px">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=rexolt&backgroundColor=transparent" alt="Avatar" class="w-28 h-28 rounded-full border-4 border-indigo-400 mx-auto mb-6 shadow-md avatar-glow" />
-      <h1 class="font-black text-4xl md:text-5xl mb-4 bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 text-transparent bg-clip-text drop-shadow-2xl">Szia, Rexolt vagyok!</h1>
-      <p class="text-lg text-[#c0bfff] mb-7">Indie fejlesztő, designer & tanuló.<br>
-      A modern web, design és kreativitás a szenvedélyem.</p>
-      <div class="flex justify-center gap-5 mb-6">
-        <a href="https://github.com/Rexolt" target="_blank" class="text-2xl text-[#e5eaff] hover:text-indigo-400 transition"><i class="fab fa-github"></i></a>
-        <a href="https://instagram.com/" target="_blank" class="text-2xl text-[#e5eaff] hover:text-fuchsia-400 transition"><i class="fab fa-instagram"></i></a>
-        <a href="https://twitter.com/" target="_blank" class="text-2xl text-[#e5eaff] hover:text-pink-400 transition"><i class="fab fa-twitter"></i></a>
+  <div class="h-[62px]"></div>
+  <!-- HERO -->
+  <section id="hero" class="flex flex-col items-center justify-center pt-8 pb-10 min-h-[55vh] fade-in">
+    <div class="terminal-window max-w-2xl w-full mx-auto mt-7">
+      <div class="terminal-header">
+        <span class="term-dot dot-red"></span>
+        <span class="term-dot dot-yellow"></span>
+        <span class="term-dot dot-green"></span>
+        <span class="terminal-title">[ rexolt@portfolio ~ ]$</span>
       </div>
-      <a href="#skills" class="main-btn mt-2">Nézd meg a skilljeimet!</a>
-    </div>
-  </section>
-
-  <section id="skills" class="pt-20 pb-16 fade-in">
-    <div class="max-w-3xl mx-auto px-5">
-      <h2 class="text-3xl md:text-4xl font-extrabold mb-6 bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 text-transparent bg-clip-text">Skilljeim</h2>
-      <div class="mb-5">
-        <div class="text-base text-[#bbb8e7] mb-1">Programozási nyelvek:</div>
-        <span class="skill-pill">JavaScript</span>
-        <span class="skill-pill">TypeScript</span>
-        <span class="skill-pill">Rust</span>
-        <span class="skill-pill">Python</span>
-      </div>
-      <div class="mb-5">
-        <div class="text-base text-[#bbb8e7] mb-1">Frameworkök & technológiák:</div>
-        <span class="skill-pill">Vue.js</span>
-        <span class="skill-pill">React</span>
-        <span class="skill-pill">TailwindCSS</span>
-        <span class="skill-pill">Electron</span>
-      </div>
-      <div class="flex gap-8 mt-9">
-        <div class="text-center">
-          <div class="stat-num text-fuchsia-400">13</div>
-          <div class="text-xs text-[#bbb8e7] mt-1">Kész projekt</div>
+      <div class="term-content text-center">
+        <span class="term-prompt">rexolt@portfolio:~$</span>
+        <span id="typed-title" class="text-[#fff] font-black text-2xl md:text-3xl mb-4 bg-gradient-to-r from-[#41ff86] to-[#36e2f8] text-transparent bg-clip-text drop-shadow-lg"></span>
+        <span class="terminal-cursor text-[#41ff86] text-2xl font-bold align-middle">|</span>
+        <br>
+        <span class="text-lg text-[#bcffe2] block mt-2">Indie fejlesztő, designer & tanuló.<br>
+        Modern web, UI/UX, kreatív ötletek.</span>
+        <div class="flex justify-center gap-4 mb-2 mt-6">
+          <a href="https://github.com/Rexolt" target="_blank" class="text-2xl text-[#41ff86] hover:text-[#36e2f8] transition"><i class="fab fa-github"></i></a>
+          <a href="https://instagram.com/" target="_blank" class="text-2xl text-[#41ff86] hover:text-pink-400 transition"><i class="fab fa-instagram"></i></a>
+          <a href="https://twitter.com/" target="_blank" class="text-2xl text-[#41ff86] hover:text-[#36e2f8] transition"><i class="fab fa-twitter"></i></a>
         </div>
-        <div class="text-center">
-          <div class="stat-num text-indigo-400">4</div>
-          <div class="text-xs text-[#bbb8e7] mt-1">Publikus repo</div>
-        </div>
-        <div class="text-center">
-          <div class="stat-num text-green-400">5</div>
-          <div class="text-xs text-[#bbb8e7] mt-1">Év tapasztalat</div>
-        </div>
+        <a href="#skills" class="main-btn mt-3">Nézd meg a skilljeimet!</a>
       </div>
     </div>
   </section>
-
-  <section id="projects" class="pt-20 pb-20 fade-in">
-    <div class="max-w-5xl mx-auto px-5">
-      <h2 class="text-3xl md:text-4xl font-extrabold mb-10 bg-gradient-to-r from-fuchsia-400 to-indigo-400 text-transparent bg-clip-text">Kiemelt projektjeim</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div class="glass project px-8 py-7 flex flex-col focus-within:ring-2 focus-within:ring-fuchsia-400 shadow-lg transition-all">
-          <span class="text-fuchsia-400 font-bold text-lg mb-1">SoundR</span>
-          <span class="text-[#bbb8e7] text-base mb-3">Electron + React alapú hangtorzító app modern UI-jal.</span>
-          <a href="#" class="inline-block mt-auto text-fuchsia-300 hover:text-indigo-300 text-base font-bold transition">Demo &rarr;</a>
+  <section id="skills" class="fade-in pt-14 pb-2">
+    <div class="flex flex-row gap-8 max-w-5xl mx-auto twocol">
+      <div class="w-[100%] md:w-1/2">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="term-dot dot-red"></span>
+            <span class="term-dot dot-yellow"></span>
+            <span class="term-dot dot-green"></span>
+            <span class="terminal-title"># Nyelvek & Frameworkök</span>
+          </div>
+          <div class="term-content">
+            <div class="mb-3">
+              <span class="term-prompt">nyelvek >_</span>
+              <span class="skill-badge">JavaScript</span>
+              <span class="skill-badge">TypeScript</span>
+              <span class="skill-badge">Rust</span>
+              <span class="skill-badge">Python</span>
+            </div>
+            <div class="mb-2">
+              <span class="term-prompt">frameworks >_</span>
+              <span class="skill-badge">Vue.js</span>
+              <span class="skill-badge">React</span>
+              <span class="skill-badge">TailwindCSS</span>
+              <span class="skill-badge">Electron</span>
+            </div>
+          </div>
         </div>
-        <div class="glass project px-8 py-7 flex flex-col shadow-lg transition-all">
-          <span class="text-indigo-400 font-bold text-lg mb-1">Portfolio V2</span>
-          <span class="text-[#bbb8e7] text-base mb-3">Ez a portfólió oldal – dark, minimal, minden eszközön letisztult.</span>
-          <a href="#" class="inline-block mt-auto text-fuchsia-300 hover:text-indigo-300 text-base font-bold transition">Demo &rarr;</a>
-        </div>
-        <div class="glass project px-8 py-7 flex flex-col shadow-lg transition-all">
-          <span class="text-green-400 font-bold text-lg mb-1">Discord Status Bot</span>
-          <span class="text-[#bbb8e7] text-base mb-3">Minecraft szerver státusz bot Discord integrációval.</span>
-          <a href="#" class="inline-block mt-auto text-fuchsia-300 hover:text-indigo-300 text-base font-bold transition">Demo &rarr;</a>
+      </div>
+      <div class="w-[100%] md:w-1/2">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="term-dot dot-red"></span>
+            <span class="term-dot dot-yellow"></span>
+            <span class="term-dot dot-green"></span>
+            <span class="terminal-title"># Főbb skill szintek</span>
+          </div>
+          <div class="term-content">
+            <div>
+              <div class="progressbar-label">JavaScript</div>
+              <div class="progressbar-track"><div class="progressbar-fill" data-skill="90"></div></div>
+              <div class="progressbar-label">TypeScript</div>
+              <div class="progressbar-track"><div class="progressbar-fill" data-skill="78"></div></div>
+              <div class="progressbar-label">Rust</div>
+              <div class="progressbar-track"><div class="progressbar-fill" data-skill="66"></div></div>
+              <div class="progressbar-label">Python</div>
+              <div class="progressbar-track"><div class="progressbar-fill" data-skill="80"></div></div>
+              <div class="progressbar-label">Vue.js</div>
+              <div class="progressbar-track"><div class="progressbar-fill" data-skill="89"></div></div>
+              <div class="progressbar-label">React</div>
+              <div class="progressbar-track"><div class="progressbar-fill" data-skill="72"></div></div>
+              <div class="progressbar-label">Electron</div>
+              <div class="progressbar-track"><div class="progressbar-fill" data-skill="65"></div></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
-
-  <section id="about" class="pt-20 pb-16 fade-in">
-    <div class="max-w-2xl mx-auto px-5">
-      <h2 class="text-3xl md:text-4xl font-extrabold mb-6 bg-gradient-to-r from-indigo-400 to-fuchsia-400 text-transparent bg-clip-text">Rólam</h2>
-      <p class="text-[#bbb8e7] text-base md:text-lg leading-relaxed mb-3">
-        A tech már gyerekkoromtól az életem része, a számítógépek szerelésétől a webfejlesztésig.
-        Szeretem a modern UI/UX-et, és örömöm lelem abban, ha <span class="font-bold text-fuchsia-400">letisztult, inspiráló digitális élményeket</span> adhatok.
-      </p>
-      <p class="text-[#bbb8e7] text-base md:text-lg leading-relaxed">
-        Hiszem, hogy <span class="font-bold text-indigo-400">az egyszerű, jól átgondolt design</span> az igazi érték – és minden projektben tanulok valami újat!
-      </p>
+  <section id="timeline" class="fade-in pt-14 pb-10">
+    <div class="terminal-window max-w-3xl w-full mx-auto">
+      <div class="terminal-header">
+        <span class="term-dot dot-red"></span>
+        <span class="term-dot dot-yellow"></span>
+        <span class="term-dot dot-green"></span>
+        <span class="terminal-title"># Szakmai idővonal</span>
+      </div>
+      <div class="term-content">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2018</div>
+            <div class="timeline-title">Első programom – Python script</div>
+            <div class="timeline-desc">Egy egyszerű játék és néhány automatizáló scripttel kezdtem.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2020</div>
+            <div class="timeline-title">Webfejlesztés – HTML/CSS/JS</div>
+            <div class="timeline-desc">Saját oldalak, első UI/UX élmények, frontend világ felfedezése.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2021</div>
+            <div class="timeline-title">Vue.js & React</div>
+            <div class="timeline-desc">Modern frameworkök, komplexebb projektek, open source.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2023</div>
+            <div class="timeline-title">Rust & Electron</div>
+            <div class="timeline-desc">Hatékonyabb appok, desktop alkalmazások, erős backend.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2024</div>
+            <div class="timeline-title">Saját projektjeim, portfólió</div>
+            <div class="timeline-desc">Komplex webappok, egyedi UI, portfólió oldal újragondolása.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
-
-  <footer class="text-center text-xs text-[#bbb8e7] py-10 mt-12">© 2025 Rexolt – Minden jog fenntartva.</footer>
-
+ 
+  <section id="projects" class="fade-in pt-14 pb-10">
+    <div class="flex flex-row gap-8 max-w-5xl mx-auto twocol">
+      <div class="w-[100%] md:w-1/2">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="term-dot dot-red"></span>
+            <span class="term-dot dot-yellow"></span>
+            <span class="term-dot dot-green"></span>
+            <span class="terminal-title"># SoundR</span>
+          </div>
+          <div class="term-content">
+            <span class="term-prompt">projekt >_</span>
+            <span class="text-[#41ff86] font-bold">Electron + React alapú hangtorzító app</span>
+            <br>
+            <span class="text-[#baffde] text-sm">Kreatív hangtorzító modern UI/UX-szel.<br>Publikus release & Discord integration!</span>
+            <br>
+            <a href="#" class="main-btn mt-4">Demo &rarr;</a>
+          </div>
+        </div>
+      </div>
+      <div class="w-[100%] md:w-1/2">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="term-dot dot-red"></span>
+            <span class="term-dot dot-yellow"></span>
+            <span class="term-dot dot-green"></span>
+            <span class="terminal-title"># Discord Status Bot</span>
+          </div>
+          <div class="term-content">
+            <span class="term-prompt">projekt >_</span>
+            <span class="text-[#36e2f8] font-bold">Minecraft szerver Discord bot</span>
+            <br>
+            <span class="text-[#baffde] text-sm">Live szerver státusz Discord integrációval.<br>Valós idejű státusz, custom parancsok.</span>
+            <br>
+            <a href="#" class="main-btn mt-4">Repo &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="about" class="fade-in pt-14 pb-8">
+    <div class="terminal-window max-w-2xl w-full mx-auto">
+      <div class="terminal-header">
+        <span class="term-dot dot-red"></span>
+        <span class="term-dot dot-yellow"></span>
+        <span class="term-dot dot-green"></span>
+        <span class="terminal-title"># Rólam</span>
+      </div>
+      <div class="term-content">
+        <span class="term-prompt">rexolt@story:~$</span>
+        <span class="text-[#baffde]">
+          <b>Tech-rajongó</b> vagyok, aki imád új dolgokat építeni.<br>
+          A <span class="text-[#fffda1]">webfejlesztés</span> & <span class="text-[#41ff86]">UI/UX</span> világa mindig inspirál.<br>
+          Fő célom: <span class="text-[#36e2f8]">egyszerű, letisztult, de látványos digitális élmények</span> készítése.<br>
+          <span class="text-[#41ff86] font-bold">Nézz körül a projektjeim között!</span>
+        </span>
+      </div>
+    </div>
+  </section>
+  <footer class="text-center text-xs text-[#41ff86] py-8 mt-4">© 2025 Rexolt – Minden jog fenntartva.</footer>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
   <script>
-   
+    
     function fadeInOnScroll() {
       document.querySelectorAll('.fade-in').forEach(section => {
         const rect = section.getBoundingClientRect();
-        if(rect.top < window.innerHeight - 70) section.classList.add('visible');
+        if(rect.top < window.innerHeight - 60){
+          section.classList.add('visible');
+        }
       });
     }
     window.addEventListener('scroll', fadeInOnScroll);
     window.addEventListener('DOMContentLoaded', fadeInOnScroll);
 
+    
     const navs = [
       {id:'hero', nav:'nav-hero'},
       {id:'skills', nav:'nav-skills'},
+      {id:'timeline', nav:'nav-timeline'},
       {id:'projects', nav:'nav-projects'},
       {id:'about', nav:'nav-about'}
     ];
     function setActiveNav() {
-      let y = window.scrollY + 90;
+      let y = window.scrollY + 70;
       navs.forEach(({id,nav})=>{
         const sec = document.getElementById(id);
         const link = document.getElementById(nav);
@@ -223,6 +434,79 @@
     }
     window.addEventListener('scroll', setActiveNav);
     window.addEventListener('DOMContentLoaded', setActiveNav);
+
+    const hamburger = document.getElementById('hamburger');
+    const mainnav = document.querySelector('.mainnav');
+    hamburger && hamburger.addEventListener('click', ()=>{
+      mainnav.classList.toggle('open');
+    });
+
+    const canvas = document.getElementById('parallaxBG');
+    let ctx = canvas.getContext('2d');
+    let lines = [];
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      lines = [];
+      for(let i=0;i<22;i++){
+        let y = Math.random()*canvas.height;
+        let speed = 0.5+Math.random()*1.2;
+        let chars = [];
+        let charsLen = Math.floor(22+Math.random()*14);
+        for(let c=0;c<charsLen;c++) {
+          chars.push(String.fromCharCode(0x30A0+Math.floor(Math.random()*96)));
+        }
+        lines.push({y,speed,chars});
+      }
+    }
+    window.addEventListener('resize',resizeCanvas); resizeCanvas();
+    let scrollY = 0;
+    window.addEventListener('scroll',()=>{ scrollY = window.scrollY; });
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(let i=0;i<lines.length;i++){
+        let l = lines[i];
+        let x = (i+2)*(canvas.width/(lines.length+3));
+        let y = (l.y + scrollY*0.22) % canvas.height;
+        for(let j=0;j<l.chars.length;j++){
+          ctx.font = (14+Math.random()*6)+'px JetBrains Mono, monospace';
+          ctx.globalAlpha = 0.15+(j/l.chars.length)*0.3;
+          ctx.fillStyle = (j==0) ? "#41ff86" : "#36e2f8";
+          ctx.fillText(l.chars[j], x, y-j*19);
+        }
+        l.y += l.speed;
+        if(l.y - l.chars.length*19 > canvas.height) l.y = -10;
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    const titleText = "Szia, Rexolt vagyok!";
+    let idx = 0;
+    function typeHeroTitle(){
+      const el = document.getElementById('typed-title');
+      if (idx <= titleText.length){
+        el.textContent = titleText.substring(0,idx);
+        idx++;
+        setTimeout(typeHeroTitle, 70 + Math.random()*55);
+      }
+    }
+    window.addEventListener('DOMContentLoaded',typeHeroTitle);
+
+    
+    function animateProgressBars() {
+      document.querySelectorAll('.progressbar-fill').forEach(bar => {
+        const parent = bar.parentElement;
+        const rect = parent.getBoundingClientRect();
+        if (!bar.dataset.animated && rect.top < window.innerHeight - 30) {
+          bar.dataset.animated = '1';
+          bar.style.width = bar.dataset.skill + '%';
+        }
+      });
+    }
+    window.addEventListener('scroll', animateProgressBars);
+    window.addEventListener('DOMContentLoaded', animateProgressBars);
   </script>
 </body>
 </html>
